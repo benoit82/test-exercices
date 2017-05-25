@@ -55,9 +55,8 @@ function creationLien(lien) {
     divElt.appendChild(pElt);
     //on retourne la div
     return divElt;
-    
-}
 
+}
 
 listeLiens.forEach(function (lien) {
     //ajout les liens à la page dans la div de contenu
@@ -68,16 +67,11 @@ listeLiens.forEach(function (lien) {
 
 //-------------ACTIVITE 2-------------//
 
-////////////
 //preparation du formulaire
-////////////
 //ajout de la div qui contiendra le nouveau bouton "ajouter un lien" et le formulaire
 var divForm = document.createElement("div");
 //attributs de la div
 divForm.style.marginBottom = "10px";
-
-
-
 
 //creation du bouton
 var buttonAdd = document.createElement("button");
@@ -96,6 +90,7 @@ buttonAdd.addEventListener("click", function (e) {
     auteurElt.setAttribute("id", "auteur");
     auteurElt.setAttribute("placeholder", "Votre nom");
     auteurElt.setAttribute("required", true);
+    auteurElt.style.marginRight = "15px";
 
     //champ titre :
     var titreElt = document.createElement("input");
@@ -103,6 +98,7 @@ buttonAdd.addEventListener("click", function (e) {
     titreElt.setAttribute("id", "titre");
     titreElt.setAttribute("placeholder", "Titre du lien");
     titreElt.setAttribute("required", true);
+    titreElt.style.marginRight = "15px";
 
     //champ auteur :
     var urlElt = document.createElement("input");
@@ -110,6 +106,7 @@ buttonAdd.addEventListener("click", function (e) {
     urlElt.setAttribute("id", "url");
     urlElt.setAttribute("placeholder", "Entrer le lien de l'url");
     urlElt.setAttribute("required", true);
+    urlElt.style.marginRight = "15px";
     //controle de la saisie sur la perte de focus :
     urlElt.addEventListener("blur", function (e) {
         var regex = /^http[s]*:\/\//;
@@ -141,12 +138,29 @@ buttonAdd.addEventListener("click", function (e) {
         };
         //on ajoute le nouveau bloc lien en 1ere position
         var bloc1 = divContenu.childNodes[0];
-        divContenu.insertBefore(creationLien(nouveauBloc),bloc1);
-        
-        //TODO : supprimer le formulaire
-        //TODO : afficher le message de confirmation -disparition au bout de 2 sec
-        //TODO : réafficher le bouton "Ajouter un lien"
-  
+        divContenu.insertBefore(creationLien(nouveauBloc), bloc1);
+
+        //destruction du formulaire
+        divForm.innerHTML = "";
+
+        //afficher le message de confirmation -disparition au bout de 2 sec
+        var divConfirmation = document.createElement("div");
+        //attributs de la div de confirmation
+        divConfirmation.style.margin = "10px 0";
+        divConfirmation.style.padding = "15px";
+        divConfirmation.style.backgroundColor = "#2ec3a0"; // couleur vert
+        //creation et insersion du message de confirmation
+        var pConfirmation = document.createElement("p");
+        pConfirmation.textContent = 'Confirmation : le lien "' + titreElt.value + '" a bien été ajouté !';
+        divConfirmation.appendChild(pConfirmation);
+        //affichage dans la page
+        divForm.appendChild(divConfirmation);
+        //animation
+        setTimeout(function () {
+            divForm.removeChild(divConfirmation);
+        }, 2000);
+        //réafficher le bouton "Ajouter un lien"
+        divForm.appendChild(buttonAdd);
     });
 
     //insersion des elements au formulaire
