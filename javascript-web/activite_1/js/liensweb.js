@@ -1,4 +1,4 @@
-/* 
+/*
 Activité 1
 */
 
@@ -29,15 +29,16 @@ var listeLiens = [
 listeLiens.forEach(function (entite) {
     //création une div de classe "lien" qui va emglober toutes les informations
     var divElt = document.createElement("div");
-    divElt.className = "lien";
+    divElt.classList.add("lien");
 
     //création du titre cliquable : <h2><a href="url">titre</a></h2>
     var titreElt = document.createElement("h2");
     var lienElt = document.createElement("a");
     lienElt.href = entite.url;
     lienElt.textContent = entite.titre;
-    //ajout du style (couleur du lien : #428bca)
+    //ajout du style (couleur du lien : #428bca) et retrait du soulignement
     lienElt.style.color = "#428bca";
+    lienElt.style.textDecoration = "none";
     //insersion du lien dans le titre
     titreElt.appendChild(lienElt);
     //ajout de l'url à coté du titre en span
