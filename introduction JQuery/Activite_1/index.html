@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+        }
+        
+        #gauche {
+            float: left;
+            width: 70%;
+            height: 1000px;
+            background-color: #EFECCA;
+        }
+        
+        #droite {
+            background-color: #CEFFF8;
+            height: 1000px;
+            padding: 10px;
+            padding-left: 71%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="gauche">
+    </div>
+    <div id="droite">
+        Utilisez ces boutons pour créer votre formulaire<br><br>
+        <button>Label</button>
+        <button>Zone de texte</button>
+        <button>Bouton</button>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            //Code jQuery
+            //Reset du formulaire
+            function resetFormulaire() {
+                $('hr').remove();
+                $('#ajoutElt').remove();
+            }
+            //Action du click sur un bouton, on affiche le formulaire adequat
+            $('#droite > button').on('click', function(e) {
+                //recuperation du texte du bouton
+                var intituleButon = $(this).text();
+                switch (intituleButon) {
+                    case "Label":
+                        var labForm = 'Texte du label :';
+                        break;
+                    case "Zone de texte":
+                        var labForm = 'ID de la zone de texte :';
+                        break;
+                    case "Bouton":
+                        var labForm = 'Texte du bouton :';
+                        break;
+                }
+                //Reset du contenu après le 3ème bouton
+                resetFormulaire();
+                //construction du formulaire
+                $('#droite').append('<hr>').append('<form>');
+                $('#droite > form').attr('id', 'ajoutElt');
+                $('#ajoutElt').append('<label>');
+                $('#ajoutElt > label:nth-child(1)').attr('for', 'texte').css('margin', '10px 10px 0 0').text(labForm);
+                $('#ajoutElt').append('<input>');
+                $('#ajoutElt > input:nth-child(2)').attr({
+                    type: 'text',
+                    name: 'texte'
+                }).css('margin', '10px 10px 0 0');
+                $('#ajoutElt').append('<input>');
+                $('#ajoutElt > input:nth-child(3)').attr({
+                    type: 'submit',
+                    value: 'OK'
+                }).css('margin', '10px 10px 0 0');
+
+                //gestion du bouton 'ajouter'
+                $('#ajoutElt').on('submit', function(e) {
+                    //Annulation de l'action prédéfini du submit
+                    e.preventDefault();
+                    var valeurInputForm = $('#ajoutElt > input:nth-child(2)').val();
+                    switch (intituleButon) {
+                        //si on envoie un label
+                        case "Label":
+                            $('#gauche').append('<span>');
+                            $('#gauche span:last-child').text(valeurInputForm);
+                            break;
+                        case "Zone de texte":
+                            $('#gauche').append('<input>').append('<br>');
+                            $('#gauche input:last-child').attr({
+                                id: valeurInputForm,
+                                type: 'text'
+                            });
+                            break;
+                        case "Bouton":
+                            $('#gauche').append('<button>');
+                            $('#gauche button:last-child').text(valeurInputForm);
+                            break;
+                    }
+                    $('#gauche *').css('margin', '10px 10px 0 0');
+                    //reset du formulaire
+                    resetFormulaire();
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>
