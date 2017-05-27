@@ -3,8 +3,6 @@ Mise à jour Activité 3 : Modification du code par rapport à l'Activité 2 :
 - Suppression du tableau de départ
 - Modification de l'affichage de lien : appel du serveur distant
 - Modification de l'evenement "submit" : on envoie les données et on rafraichit l'affichage des liens
-
-Bonne correction ;)
 */
 
 
