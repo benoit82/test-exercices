@@ -125,37 +125,57 @@ buttonAdd.addEventListener("click", function (e) {
         if (!regex.test(urlElt.value)) {
             urlElt.value = "http://" + urlElt.value;
         }
-        //ajout les champs rempli dans les liens
-        var nouveauBloc = {
+        //preparation à l'envoi des données
+        var nouveauLien = {
             titre: titreElt.value,
             url: urlElt.value,
             auteur: auteurElt.value
         };
-        //on ajoute le nouveau bloc lien en 1ere position
+
+        /*
+        //ajout du nouveau bloc lien en 1ere position
         var bloc1 = divContenu.childNodes[0];
         divContenu.insertBefore(creationLien(nouveauBloc), bloc1);
+        */
 
-        //destruction du formulaire
-        divForm.innerHTML = "";
+        //envoie des données au serveur distant
+        ajaxPost("https://oc-jswebsrv.herokuapp.com/api/lien", nouveauLien, function (reponse) {
+            //configuration des variable d'affichage si les données ont été reçu ou non
+            //si tout est ok
+            if (reponse.length > 0) {
+                var confBackgroundColor = "#2ec3a0"; // couleur vert
+                var textConfirmation = 'Confirmation : le lien "' + titreElt.value + '" a bien été ajouté !'
+            } else {
+                //sinon information erreur
+                var confBackgroundColor = "red";
+                var textConfirmation = "erreur sur l'envoi des données";
+            }
 
-        //afficher le message de confirmation -disparition au bout de 2 sec
-        var divConfirmation = document.createElement("div");
-        //attributs de la div de confirmation
-        divConfirmation.style.margin = "10px 0";
-        divConfirmation.style.padding = "15px";
-        divConfirmation.style.backgroundColor = "#2ec3a0"; // couleur vert
-        //creation et insersion du message de confirmation
-        var pConfirmation = document.createElement("p");
-        pConfirmation.textContent = 'Confirmation : le lien "' + titreElt.value + '" a bien été ajouté !';
-        divConfirmation.appendChild(pConfirmation);
-        //affichage dans la page
-        divForm.appendChild(divConfirmation);
-        //animation
-        setTimeout(function () {
-            divForm.removeChild(divConfirmation);
-        }, 2000);
-        //réafficher le bouton "Ajouter un lien"
-        divForm.appendChild(buttonAdd);
+            //destruction du formulaire
+            divForm.innerHTML = "";
+
+            //afficher le message de confirmation -disparition au bout de 2 sec
+            var divConfirmation = document.createElement("div");
+            //attributs de la div de confirmation
+            divConfirmation.style.margin = "10px 0";
+            divConfirmation.style.padding = "15px";
+            divConfirmation.style.backgroundColor = confBackgroundColor; // couleur vert
+            //creation et insersion du message de confirmation
+            var pConfirmation = document.createElement("p");
+            pConfirmation.textContent = textConfirmation;
+            divConfirmation.appendChild(pConfirmation);
+            //affichage dans la page
+            divForm.appendChild(divConfirmation);
+            //animation
+            setTimeout(function () {
+                divForm.removeChild(divConfirmation);
+            }, 2000);
+            //réafficher le bouton "Ajouter un lien" et des liens
+            divForm.appendChild(buttonAdd);
+            recupLien("https://oc-jswebsrv.herokuapp.com/api/liens");
+        }, true);
+
+
     });
 
     //insersion des elements au formulaire
@@ -165,6 +185,7 @@ buttonAdd.addEventListener("click", function (e) {
     });
     //insersion du formulaire dans la div
     divForm.appendChild(formElt);
+
 });
 
 //insersion de la div avant la div contenu
