@@ -42,6 +42,7 @@ function creationLien(lien) {
 
 //recuperation des liens sur le serveur à distance
 function recupLien(url) {
+    divContenu.innerHTML = "";
     ajaxGet(url, function (reponse) {
         //si la réponse n'est pas vide, on reçoit un JSON qu'on traduit en JavaScript
         if (reponse.length > 0) {
