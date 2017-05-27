@@ -1,29 +1,13 @@
 /*
-Activité 1
+Mise à jour Activité 3 : Modification du code par rapport à l'Activité 2 :
+- Suppression du tableau de départ
+- Modification de l'affichage de lien : appel du serveur distant
+- Modification de l'evenement "submit" : on envoie les données et on rafraichit l'affichage des liens
+
+Bonne correction ;)
 */
 
-// Liste des liens Web à afficher. Un lien est défini par :
-// - son titre
-// - son URL
-// - son auteur (la personne qui l'a publié)
-var listeLiens = [
-    {
-        titre: "So Foot",
-        url: "http://sofoot.com",
-        auteur: "yann.usaille"
-    },
-    {
-        titre: "Guide d'autodéfense numérique",
-        url: "http://guide.boum.org",
-        auteur: "paulochon"
-    },
-    {
-        titre: "L'encyclopédie en ligne Wikipedia",
-        url: "http://Wikipedia.org",
-        auteur: "annie.zette"
-    }
-];
-//-------------ACTIVITE 1-------------//
+
 var divContenu = document.getElementById("contenu");
 
 //passage en paramètre un lien complet : son titre, son auteur, son url
@@ -58,16 +42,27 @@ function creationLien(lien) {
 
 }
 
-listeLiens.forEach(function (lien) {
-    //ajout les liens à la page dans la div de contenu
-    divContenu.appendChild(creationLien(lien));
-});
+//recuperation des liens sur le serveur à distance
+function recupLien(url) {
+    ajaxGet(url, function (reponse) {
+        //si la réponse n'est pas vide, on reçoit un JSON qu'on traduit en JavaScript
+        if (reponse.length > 0) {
+            var liens = JSON.parse(reponse);
+            liens.forEach(function (lien) {
+                divContenu.appendChild(creationLien(lien));
+            });
+        } else {
+            //sinon on affiche un message disant qu'aucune info n'a été reçu
+            var textInfo = document.createTextNode("Connexion établi, mais aucune information reçue.");
+            divContenu.appendChild(textInfo);
+        }
+    });
+}
+
+recupLien("https://oc-jswebsrv.herokuapp.com/api/liens");
 
 
-
-//-------------ACTIVITE 2-------------//
-
-//preparation du formulaire
+//preparation du formulaire d'ajout
 //ajout de la div qui contiendra le nouveau bouton "ajouter un lien" et le formulaire
 var divForm = document.createElement("div");
 //attributs de la div
@@ -171,7 +166,6 @@ buttonAdd.addEventListener("click", function (e) {
     //insersion du formulaire dans la div
     divForm.appendChild(formElt);
 });
-
 
 //insersion de la div avant la div contenu
 document.querySelector("body").insertBefore(divForm, divContenu);
