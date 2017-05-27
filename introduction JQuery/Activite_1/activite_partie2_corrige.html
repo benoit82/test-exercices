@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        margin: 0;
+      }
+      #gauche {
+        float: left;
+        width: 70%;
+        height: 1000px;
+        background-color: #EFECCA;
+      }
+      #droite {
+        background-color: #CEFFF8;
+        height: 1000px;
+        padding : 10px;
+        padding-left: 71%;
+      }
+      /* Quelques lignes de CSS "donnent un peu d'air" aux éléments injectés dans le DOM pour éviter qu'ils ne se collent les uns aux autres et qu'ils adhèrent aux bords de l'écran */
+      span, button, input {
+        margin: 10px;
+      }	
+    </style>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  </head>
+  <body>
+    <div id="gauche">
+    </div>
+    <div id="droite">
+      Utilisez ces boutons pour créer votre formulaire<br><br>
+      <button id="btn1">Label</button>
+      <button id="btn2">Zone de texte</button>
+      <button id="btn3">Bouton</button>
+      <hr>
+    </div>
+    <script>
+      $(function(){
+        //Lorsque le bouton 1 est cliqué, un texte, une zone de texte et un bouton sont injectés dans le DOM, après la balise <hr>. Remarquez que ces éléments sont insérés dans une balise <div> parent did conteneur.Cela permettra par la suite de faciliter leur suppression du DOM
+        $('#btn1').click(function(){
+          $('hr').after('<div id="conteneur">Texte du label <input type="text" id="tex"><button id="btnok">OK</button></div>');
+          //Lorsque le bouton OK est pressé, un <span> est inséré dans la balise <div> d'id gauche
+          $('#btnok').click(function(){
+            var lid =  '<span>' + $('#tex').val() + '</span>';
+            $('#gauche').append(lid);
+            //Et le <div> d'id conteneur est supprimé du DOM
+            $('#conteneur').remove();
+          });
+        });
+        
+        //Le traitement des deux autres boutons est très proche. Dans le cas du deuxième bouton, un <input> de type text et dont l'id a été défini par l'utilisateur est injecté dans le <div> d'id gauche et les éléments affichés dans la partie droite de l'écran sont supprimés
+        $('#btn2').click(function(){
+          $('hr').after('<div id="conteneur">id de la zone de texte <input type="text" id="tex"><button id="btnok">OK</button></div>');
+          $('#btnok').click(function(){
+            var lid =  '<input type="text" id="' + $('#tex').val() + '"><br>';
+            $('#gauche').append(lid);
+            $('#conteneur').remove();
+          });
+        });
+        
+        //Le troisième bouton fait à peu près la même chose si ce n'est qu'il injecte un <button> dans le DOM en lui donnant le libellé défini par l'utilisateur
+        $('#btn3').click(function(){
+          $('hr').after('<div id="conteneur">Texte du bouton <input type="text" id="tex"><button id="btnok">OK</button></div>');
+          $('#btnok').click(function(){
+            var lid =  '<button>' + $('#tex').val() + '</button>';
+            $('#gauche').append(lid);
+            $('#conteneur').remove();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
