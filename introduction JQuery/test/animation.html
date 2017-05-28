@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Animations</title>
+    <!--    <link rel="stylesheet" href=".css">-->
+</head>
+
+<body>
+<style type="text/css">
+  img 
+  { 
+    position: absolute; 
+    left: 0px; 
+    top: 0px; 
+    display: none; 
+  }-
+</style>
+
+<img src="http://lorempixel.com/400/200/animals/a" id="img5">
+<img src="http://lorempixel.com/400/200/animals/b" id="img4">
+<img src="http://lorempixel.com/400/200/animals/c" id="img3">
+<img src="http://lorempixel.com/400/200/animals/d" id="img2">
+<img src="http://lorempixel.com/400/200/animals/e" id="img1">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $(function() {
+    var i=0;
+    affiche();
+
+    function affiche() {
+      i++;
+      if (i==1) precedent = '#img5'
+           else precedent = '#img' + (i-1);
+      var actuel = '#img' + i;
+      $(precedent).fadeOut(2000);
+      $(actuel).fadeIn(2000);
+      if (i==5) i=0;          
+    }
+
+    setInterval(affiche, 2000);
+  });
+</script>
+
+
+
+</body>
+
+</html>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
